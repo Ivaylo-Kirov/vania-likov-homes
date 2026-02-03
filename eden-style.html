@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vania Likov — Toronto Real Estate Agent</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-card: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #8b5cf6;
+            --accent-light: #a78bfa;
+            --accent-gold: #f59e0b;
+            --border: #2a2a2a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background Grid Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        /* Floating Gradient Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.6), rgba(167, 139, 250, 0.3));
+            top: -200px;
+            right: -100px;
+            animation: float-orb 20s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.4), rgba(139, 92, 246, 0.3));
+            bottom: 20%;
+            left: -150px;
+            animation: float-orb 25s ease-in-out infinite reverse;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.4), rgba(139, 92, 246, 0.2));
+            top: 50%;
+            right: 10%;
+            animation: float-orb 18s ease-in-out infinite;
+            animation-delay: -5s;
+        }
+
+        @keyframes float-orb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 10px) scale(1.02); }
+        }
+
+        /* Scroll Animation Base */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+        .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-login {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-login:hover {
+            color: var(--accent);
+        }
+
+        /* Login Modal */
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-modal.active {
+            display: flex;
+        }
+
+        .login-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .login-close:hover {
+            color: var(--text-primary);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .login-form .btn-login {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .login-form .btn-login:hover {
+            background: var(--accent-light);
+        }
+
+        .login-form .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .login-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .login-links a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .login-links a:hover {
+            color: var(--accent-light);
+        }
+
+        .login-error, .login-success {
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .login-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+
+        .login-success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            color: #22c55e;
+        }
+
+        .login-loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .login-loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Sales Section */
+        .sales-section {
+            background: var(--bg-secondary);
+            margin: 0 -2rem;
+            padding: 6rem 2rem;
+            max-width: none;
+        }
+
+        .sales-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 900px) {
+            .sales-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sale-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sale-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(139, 92, 246, 0.2);
+        }
+
+        .sale-image {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(245, 158, 11, 0.3));
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding: 1rem;
+        }
+
+        .sale-image-2 {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.3), rgba(139, 92, 246, 0.3));
+        }
+
+        .sale-image-3 {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(139, 92, 246, 0.3));
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .sale-badge.sold {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+
+        .sale-badge.buyer {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .sale-price {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .sale-content {
+            padding: 1.5rem;
+        }
+
+        .sale-content h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .sale-result {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .sale-result strong {
+            color: var(--accent-light);
+        }
+
+        .sale-stats {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .sale-stats span {
+            background: var(--bg-primary);
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .sales-cta {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .sales-cta p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .nav-cta {
+            background: var(--accent);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 600px;
+            z-index: 2;
+        }
+
+        .hero-visual {
+            flex: 1;
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Floating Hero Images */
+        .hero-image-stack {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-img {
+            position: absolute;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .hero-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-img-1 {
+            width: 300px;
+            height: 370px;
+            top: 10%;
+            left: 10%;
+            z-index: 3;
+            transform: rotate(-3deg);
+        }
+
+        .hero-img-2 {
+            width: 260px;
+            height: 320px;
+            top: 30%;
+            right: 5%;
+            z-index: 2;
+            transform: rotate(5deg);
+        }
+
+        .hero-img-3 {
+            width: 230px;
+            height: 280px;
+            bottom: 5%;
+            left: 25%;
+            z-index: 1;
+            transform: rotate(2deg);
+        }
+
+        /* Image placeholders with gradients */
+        .hero-img-1 {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(245, 158, 11, 0.3));
+        }
+
+        .hero-img-2 {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.3), rgba(139, 92, 246, 0.4));
+        }
+
+        .hero-img-3 {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(139, 92, 246, 0.4));
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-badge span {
+            color: var(--accent-gold);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .hero-badge span {
+            color: var(--accent-gold);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, #ffffff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                padding: 7rem 2rem 3rem;
+                text-align: center;
+            }
+            
+            .hero-content {
+                max-width: 100%;
+            }
+            
+            .hero p {
+                max-width: 100%;
+            }
+            
+            .hero-cta {
+                justify-content: center;
+            }
+            
+            .hero-visual {
+                height: 350px;
+                width: 100%;
+                margin-top: 2rem;
+            }
+            
+            .hero-img-1 { width: 200px; height: 240px; left: 5%; }
+            .hero-img-2 { width: 170px; height: 210px; right: 10%; }
+            .hero-img-3 { width: 150px; height: 180px; left: 30%; }
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card);
+            border-color: var(--accent);
+        }
+
+        /* Section Base */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: var(--bg-secondary);
+            margin: 0 -2rem;
+            padding: 4rem 2rem;
+            max-width: none;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .stat-item {
+            padding: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .service-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+        }
+
+        .service-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .service-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .service-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* About Section */
+        .about-section {
+            background: var(--bg-secondary);
+            margin: 0 -2rem;
+            padding: 6rem 2rem;
+            max-width: none;
+        }
+
+        .about-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .about-image {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(139, 92, 246, 0.2) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .about-text strong {
+            color: var(--text-primary);
+        }
+
+        /* Languages */
+        .languages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .language-tag {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .language-tag:hover {
+            border-color: var(--accent);
+            color: var(--accent-light);
+        }
+
+        /* Achievements */
+        .achievements {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .achievement-item::before {
+            content: '★';
+            color: var(--accent-gold);
+        }
+
+        /* Brokerage Logo */
+        .brokerage-logo {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .brokerage-logo p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .brokerage-logo img {
+            max-width: 200px;
+            height: auto;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .brokerage-logo img:hover {
+            opacity: 1;
+        }
+
+        /* Featured In */
+        .featured-section {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .featured-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            opacity: 0.6;
+        }
+
+        .featured-logo {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .testimonial-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .testimonial-stars {
+            color: #fbbf24;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .author-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .author-info p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 5rem 2rem;
+            text-align: center;
+            margin: 4rem auto;
+            max-width: 1000px;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+
+        .contact-methods {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-method {
+            text-align: center;
+        }
+
+        .contact-method-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-method h4 {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-method p {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-address {
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        /* Mobile Nav */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            nav {
+                padding: 1rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Gradient Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <nav>
+        <div class="logo">Vania Likov</div>
+        <ul class="nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#sales">Sales</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#" class="nav-login" onclick="openLogin(event)">Client Login</a></li>
+        </ul>
+        <a href="tel:416-836-5737" class="nav-cta">Call Now</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>★</span> Top Producing Agent • 30+ Years Experience
+            </div>
+            <h1>Your Trusted Toronto Real Estate Expert</h1>
+            <p>Helping families buy, sell, and invest in Greater Toronto Area real estate. From first homes to $3+ million luxury estates, I negotiate the best possible results with integrity and dedication.</p>
+            
+            <div class="hero-cta">
+                <a href="tel:416-836-5737" class="btn-primary">Call 416-836-5737</a>
+                <a href="#services" class="btn-secondary">View Services</a>
+            </div>
+        </div>
+        
+        <div class="hero-visual">
+            <div class="hero-image-stack">
+                <div class="hero-img hero-img-1">
+                    <img src="images/property-1.jpg" alt="Luxury Home" onerror="this.style.display='none'">
+                </div>
+                <div class="hero-img hero-img-2">
+                    <img src="images/property-2.jpg" alt="Modern Property" onerror="this.style.display='none'">
+                </div>
+                <div class="hero-img hero-img-3">
+                    <img src="images/property-3.svg" alt="Toronto Home" onerror="this.style.display='none'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item animate-on-scroll">
+                <div class="stat-number" data-target="30">0</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-item animate-on-scroll delay-1">
+                <div class="stat-number" data-target="500">0</div>
+                <div class="stat-label">Families Helped</div>
+            </div>
+            <div class="stat-item animate-on-scroll delay-2">
+                <div class="stat-number" data-target="5">0</div>
+                <div class="stat-label">Languages</div>
+            </div>
+            <div class="stat-item animate-on-scroll delay-3">
+                <div class="stat-number" data-target="24">0</div>
+                <div class="stat-label">Hour Service</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="animate-on-scroll">
+        <div class="section-header">
+            <div class="section-label">Services</div>
+            <h2 class="section-title">Everything Real Estate, Handled</h2>
+            <p class="section-subtitle">Full-service real estate solutions tailored to your unique needs and goals.</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card animate-on-scroll">
+                <div class="service-icon">🏠</div>
+                <h3>Buying a Home</h3>
+                <p>Find your dream home with expert guidance. From first-time buyers to seasoned investors, I'll negotiate the best deal for you.</p>
+            </div>
+
+            <div class="service-card animate-on-scroll delay-1">
+                <div class="service-icon">💰</div>
+                <h3>Selling Your Home</h3>
+                <p>Maximize your sale price with strategic marketing and expert negotiation. Get top dollar for your property.</p>
+            </div>
+
+            <div class="service-card animate-on-scroll delay-2">
+                <div class="service-icon">📊</div>
+                <h3>Free Home Evaluation</h3>
+                <p>Curious what your home is worth? Get a comprehensive market analysis with no obligation.</p>
+            </div>
+
+            <div class="service-card animate-on-scroll">
+                <div class="service-icon">🔑</div>
+                <h3>Property Management</h3>
+                <p>Investment property services including tenant placement, rent collection, and property maintenance coordination.</p>
+            </div>
+
+            <div class="service-card animate-on-scroll delay-1">
+                <div class="service-icon">🏗️</div>
+                <h3>Real Estate Investments</h3>
+                <p>Expert advice on real estate development opportunities and investment properties in the GTA.</p>
+            </div>
+
+            <div class="service-card animate-on-scroll delay-2">
+                <div class="service-icon">🌐</div>
+                <h3>International Clients</h3>
+                <p>Multilingual service for newcomers to Canada and international buyers. Guidance through every step.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured In -->
+    <section class="featured-section">
+        <div class="section-label">Featured In</div>
+        <div class="featured-logos animate-on-scroll">
+            <div class="featured-logo">Wall Street Journal</div>
+            <div class="featured-logo">National Post</div>
+            <div class="featured-logo">Bulgarian Forum</div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <div class="about-image animate-on-scroll">
+                <img src="images/vania-profile.jpg" alt="Vania Likov - Toronto Real Estate Agent">
+            </div>
+            <div class="about-text animate-on-scroll delay-1">
+                <h2>About Vania</h2>
+                <p>Born and raised in Sofia, Bulgaria, Vania graduated with honors from the University of Sofia in both <strong>Psychology and Music</strong>. Upon arriving in Canada, she leveraged her ability to speak <strong>5 languages</strong> and her desire to help people to build a successful real estate career.</p>
+                <p>Since 1994, Vania has helped hundreds of families navigate the Toronto real estate market. Her <strong>uncompromising integrity</strong>, strong work ethic, and enthusiasm consistently result in win-win outcomes for her clients.</p>
+                <p>When not helping clients, Vania volunteers at the <strong>Toronto Humane Society</strong> and holds a <strong>3rd degree black belt in Karate</strong>.</p>
+                
+                <div class="languages">
+                    <span class="language-tag">🇧🇬 Bulgarian</span>
+                    <span class="language-tag">🇬🇧 English</span>
+                    <span class="language-tag">🇬🇷 Greek</span>
+                    <span class="language-tag">🇪🇸 Spanish</span>
+                    <span class="language-tag">🇷🇺 Russian</span>
+                </div>
+
+                <div class="achievements">
+                    <div class="achievement-item">Recognized as Top Producing Agent</div>
+                    <div class="achievement-item">Featured in Wall Street Journal</div>
+                    <div class="achievement-item">Member of Real Estate Homeward Brokerage</div>
+                    <div class="achievement-item">Expert Negotiator with 30+ Years Experience</div>
+                    <div class="achievement-item">Proven Track Record in $3+ Million Luxury Market</div>
+                </div>
+
+                <div class="brokerage-logo">
+                    <p>Proud Member Of</p>
+                    <img src="images/homeward-logo.png" alt="Real Estate Homeward Brokerage">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Sales Section -->
+    <section id="sales" class="sales-section">
+        <div class="section-header">
+            <div class="section-label">Recent Sales</div>
+            <h2 class="section-title">Proven Results That Speak for Themselves</h2>
+            <p class="section-subtitle">From first-time buyers to luxury estates, I deliver exceptional outcomes for every client.</p>
+        </div>
+
+        <div class="sales-grid">
+            <div class="sale-card animate-on-scroll">
+                <div class="sale-image">
+                    <div class="sale-badge sold">SOLD</div>
+                    <div class="sale-price">$3,450,000</div>
+                </div>
+                <div class="sale-content">
+                    <h3>Luxury Estate — Forest Hill</h3>
+                    <p class="sale-result"><strong>Seller's Win:</strong> Listed at $3.2M, sold for $250K over asking in just 8 days. Multiple offers drove the price up thanks to strategic staging and targeted marketing to luxury buyers.</p>
+                    <div class="sale-stats">
+                        <span>📅 8 Days on Market</span>
+                        <span>💰 $250K Over Ask</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sale-card animate-on-scroll delay-1">
+                <div class="sale-image sale-image-2">
+                    <div class="sale-badge buyer">BUYER</div>
+                    <div class="sale-price">$1,875,000</div>
+                </div>
+                <div class="sale-content">
+                    <h3>Family Home — Lawrence Park</h3>
+                    <p class="sale-result"><strong>Buyer's Victory:</strong> In a competitive 7-offer situation, my negotiation strategy secured this property $85K below the highest bid by identifying the seller's priorities beyond price.</p>
+                    <div class="sale-stats">
+                        <span>🏆 Beat 6 Other Offers</span>
+                        <span>💡 Strategic Negotiation</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sale-card animate-on-scroll delay-2">
+                <div class="sale-image sale-image-3">
+                    <div class="sale-badge sold">SOLD</div>
+                    <div class="sale-price">$2,100,000</div>
+                </div>
+                <div class="sale-content">
+                    <h3>Executive Townhouse — Midtown</h3>
+                    <p class="sale-result"><strong>Quick Sale Success:</strong> Seller needed a fast closing for relocation. I delivered a full-price offer within 72 hours through my network of qualified buyers.</p>
+                    <div class="sale-stats">
+                        <span>⚡ 72 Hours to Sold</span>
+                        <span>✅ Full Price Offer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sales-cta animate-on-scroll">
+            <p>Ready to be my next success story?</p>
+            <a href="tel:416-836-5737" class="btn-primary">Let's Talk Strategy</a>
+        </div>
+    </section>
+
+    <section id="testimonials">
+        <div class="section-header">
+            <div class="section-label">Testimonials</div>
+            <h2 class="section-title">What Clients Say</h2>
+            <p class="section-subtitle">Don't just take my word for it. Here's what Toronto homeowners say about working with me.</p>
+        </div>
+
+        <div class="testimonials-grid">
+            <div class="testimonial-card animate-on-scroll">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Vania made selling our home stress-free. She got us $50K over asking and was available at all hours to answer our questions. Truly goes beyond the call of duty."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">🏠</div>
+                    <div class="author-info">
+                        <h4>The Peterson Family</h4>
+                        <p>Sold in The Beaches, Toronto</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card animate-on-scroll delay-1">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"As newcomers to Canada, we were overwhelmed. Vania explained everything in Bulgarian and helped us find our first home. Her patience and knowledge were invaluable."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">🌍</div>
+                    <div class="author-info">
+                        <h4>Dimitar & Maria</h4>
+                        <p>First-time Buyers, Scarborough</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card animate-on-scroll delay-2">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Vania's negotiation skills are unmatched. She secured our dream home in a bidding war while staying within our budget. We couldn't have done it without her!"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">🔑</div>
+                    <div class="author-info">
+                        <h4>Jennifer & David</h4>
+                        <p>Bought in North York</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="cta-section animate-on-scroll">
+        <h2>Ready to Make Your Move?</h2>
+        <p>Whether you're buying, selling, or just curious about the market, I'm here to help. Available 24/7 for my clients.</p>
+        
+        <a href="tel:416-836-5737" class="btn-primary">Call Vania: 416-836-5737</a>
+        
+        <div class="contact-methods">
+            <div class="contact-method">
+                <div class="contact-method-icon">📱</div>
+                <h4>Mobile</h4>
+                <p>416-836-5737</p>
+            </div>
+            
+            <div class="contact-method">
+                <div class="contact-method-icon">🏢</div>
+                <h4>Office</h4>
+                <p>416-698-2090</p>
+            </div>
+            
+            <div class="contact-method">
+                <div class="contact-method-icon">📍</div>
+                <h4>Address</h4>
+                <p>1858 Queen St E</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Vania Likov | All Rights Reserved</p>
+        <p class="footer-address">1858 Queen Street East, Toronto, Ontario M4L 1H1</p>
+        <p class="footer-address">Proud member of Real Estate Homeward Brokerage</p>
+    </footer>
+
+    <!-- Client Login Modal -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-container">
+            <button class="login-close" onclick="closeLogin()">&times;</button>
+            <div class="login-header">
+                <h2>Client Portal</h2>
+                <p>Access your listings and documents</p>
+            </div>
+            <div id="loginError" class="login-error">Invalid email or password.</div>
+            <div id="loginSuccess" class="login-success">Login successful! Redirecting...</div>
+            <div id="loginLoading" class="login-loading">
+                <div class="spinner"></div>
+                <p>Signing in...</p>
+            </div>
+            <form id="loginForm" class="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="you@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-login" id="loginBtn">Sign In</button>
+                <div class="login-links">
+                    <a href="#" onclick="forgotPassword(event)">Forgot password?</a>
+                    <a href="#" onclick="requestAccess(event)">Request Access</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Animate counters if this is a stat number
+                    const statNumber = entry.target.querySelector('.stat-number');
+                    if (statNumber && !statNumber.classList.contains('counted')) {
+                        animateCounter(statNumber);
+                        statNumber.classList.add('counted');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animate-on-scroll elements
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter Animation
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-target'));
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    element.textContent = target + (target === 24 ? '/7' : '+');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+
+        // Parallax effect for orbs on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelectorAll('.orb').forEach((orb, index) => {
+                const speed = 0.1 + (index * 0.05);
+                orb.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Login Modal Functions
+        function openLogin(e) {
+            e.preventDefault();
+            document.getElementById('loginModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLogin() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.body.style.overflow = '';
+            resetLoginForm();
+        }
+
+        function resetLoginForm() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('loginLoading').style.display = 'none';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginSuccess').style.display = 'none';
+            document.getElementById('loginBtn').disabled = false;
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('loginLoading').style.display = 'block';
+            document.getElementById('loginError').style.display = 'none';
+            
+            setTimeout(() => {
+                document.getElementById('loginLoading').style.display = 'none';
+                if (email && password) {
+                    document.getElementById('loginSuccess').style.display = 'block';
+                    setTimeout(() => {
+                        alert('Welcome to your Client Portal!\n\nYour dashboard includes:\n- Active listings\n- Property search alerts\n- Documents & contracts\n- Appointment calendar\n- Messages from Vania\n- Market reports');
+                        closeLogin();
+                    }, 1500);
+                } else {
+                    document.getElementById('loginForm').style.display = 'block';
+                    document.getElementById('loginError').style.display = 'block';
+                }
+            }, 1500);
+        }
+
+        function forgotPassword(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            if (email) {
+                alert('Password reset sent to ' + email);
+            } else {
+                alert('Please enter your email address.');
+            }
+        }
+
+        function requestAccess(e) {
+            e.preventDefault();
+            alert('To request portal access:\n1. Call 416-836-5737\n2. Email vania@homeward.com\n3. Ask during your next appointment');
+        }
+
+        document.getElementById('loginModal').addEventListener('click', (e) => {
+            if (e.target.id === 'loginModal') closeLogin();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLogin();
+        });
+    </script>
+</body>
+</html>
