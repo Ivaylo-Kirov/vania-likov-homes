@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vania Likov — Toronto Real Estate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #0a0a0a;
+            --white: #ffffff;
+            --cream: #f5f3ef;
+            --gold: #c9a962;
+            --gold-light: #e0d4a8;
+            --gray: #6b6b6b;
+            --border: #e5e5e5;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--cream);
+            color: var(--black);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* Typography Scale */
+        .text-xs { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+        .text-sm { font-size: 14px; }
+        .text-base { font-size: 16px; }
+        .text-lg { font-size: 20px; }
+        .text-xl { font-size: 24px; }
+        .text-2xl { font-size: 32px; }
+        .text-3xl { font-size: 48px; line-height: 1.1; }
+        .text-4xl { font-size: 72px; line-height: 0.95; }
+
+        /* Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            mix-blend-mode: difference;
+            padding: 24px 5%;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-contact {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 1px solid currentColor;
+            padding-bottom: 2px;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            background: var(--black);
+            color: var(--white);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+        }
+
+        .hero-content {
+            padding: 160px 10% 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-tag {
+            color: var(--gold);
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            font-weight: 300;
+            margin-bottom: 32px;
+        }
+
+        .hero h1 span {
+            display: block;
+            font-weight: 600;
+        }
+
+        .hero-desc {
+            color: rgba(255,255,255,0.6);
+            max-width: 400px;
+            margin-bottom: 48px;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--gold);
+            color: var(--black);
+            padding: 18px 32px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s;
+            width: fit-content;
+        }
+
+        .hero-cta:hover {
+            background: var(--gold-light);
+            transform: translateX(8px);
+        }
+
+        .hero-image {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(30%);
+        }
+
+        .hero-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, var(--black), transparent);
+        }
+
+        .featured-badge {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            z-index: 2;
+        }
+
+        .featured-badge .label {
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .featured-badge .name {
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        /* Marquee */
+        .marquee {
+            background: var(--gold);
+            color: var(--black);
+            padding: 20px 0;
+            overflow: hidden;
+        }
+
+        .marquee-content {
+            display: flex;
+            gap: 60px;
+            animation: scroll 20s linear infinite;
+            white-space: nowrap;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .marquee-item::after {
+            content: '•';
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-bar .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            padding: 40px 5%;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat:not(:last-child) {
+            border-right: 1px solid var(--border);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Properties Section */
+        .properties {
+            padding: 120px 0;
+            background: var(--cream);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 60px;
+            padding: 0 5%;
+        }
+
+        .section-title h2 {
+            font-weight: 300;
+            margin-bottom: 16px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 400px;
+        }
+
+        .view-all {
+            color: var(--black);
+            text-decoration: none;
+            border-bottom: 1px solid currentColor;
+            padding-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 0 5%;
+        }
+
+        .property-card {
+            background: var(--white);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .property-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .property-image {
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .property-card:hover .property-image img {
+            transform: scale(1.05);
+        }
+
+        .property-tag {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--black);
+            color: var(--white);
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
+        .property-info {
+            padding: 24px;
+        }
+
+        .property-price {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .property-address {
+            color: var(--gray);
+            margin-bottom: 16px;
+        }
+
+        .property-meta {
+            display: flex;
+            gap: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        /* About Section */
+        .about {
+            padding: 120px 5%;
+            background: var(--white);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .experience-badge {
+            position: absolute;
+            bottom: -20px;
+            right: 20px;
+            background: var(--gold);
+            color: var(--black);
+            padding: 24px 32px;
+        }
+
+        .experience-badge .years {
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .experience-badge .text {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .about-content h2 {
+            font-weight: 300;
+            margin-bottom: 24px;
+        }
+
+        .about-content h2 strong {
+            font-weight: 600;
+        }
+
+        .about-content p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .about-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 24px;
+            border-bottom: 1px solid currentColor;
+            padding-bottom: 4px;
+        }
+
+        /* Contact CTA */
+        .contact-cta {
+            padding: 120px 5%;
+            background: var(--black);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .contact-cta h2 {
+            font-weight: 300;
+            margin-bottom: 24px;
+        }
+
+        .contact-cta p {
+            color: rgba(255,255,255,0.6);
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--black);
+            padding: 20px 40px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .contact-btn:hover {
+            background: var(--gold-light);
+            transform: translateY(-4px);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 5%;
+            background: var(--black);
+            color: var(--gray);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-image {
+                display: none;
+            }
+
+            .text-4xl { font-size: 48px; }
+            .text-3xl { font-size: 36px; }
+
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar .container {
+                grid-template-columns: 1fr;
+            }
+
+            .stat:not(:last-child) {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">Vania Likov</a>
+            <a href="tel:647-705-2302" class="nav-contact">(647) 705-2302</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-tag text-xs">Toronto Real Estate Agent</div>
+            <h1 class="text-4xl">Find your <span>perfect</span> <span>place</span></h1>
+            <p class="hero-desc text-lg">With Homeward Real Estate, I help buyers and sellers navigate the Toronto market with confidence and clarity.</p>
+            <a href="tel:647-705-2302" class="hero-cta">Schedule a Consultation →</a>
+        </div>
+        <div class="hero-image">
+            <img src="images/vania-profile.jpg" alt="Vania Likov">
+            <div class="featured-badge">
+                <div class="label text-xs">Featured Agent</div>
+                <div class="name">Homeward Real Estate</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="marquee">
+        <div class="marquee-content">
+            <div class="marquee-item">Downtown Toronto</div>
+            <div class="marquee-item">North York</div>
+            <div class="marquee-item">Scarborough</div>
+            <div class="marquee-item">Etobicoke</div>
+            <div class="marquee-item">Vaughan</div>
+            <div class="marquee-item">Mississauga</div>
+            <div class="marquee-item">Downtown Toronto</div>
+            <div class="marquee-item">North York</div>
+            <div class="marquee-item">Scarborough</div>
+            <div class="marquee-item">Etobicoke</div>
+            <div class="marquee-item">Vaughan</div>
+            <div class="marquee-item">Mississauga</div>
+        </div>
+    </div>
+
+    <section class="stats-bar">
+        <div class="container">
+            <div class="stat">
+                <div class="stat-number">$50M+</div>
+                <div class="stat-label">Sales Volume</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">200+</div>
+                <div class="stat-label">Properties Sold</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Client Satisfaction</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="properties">
+        <div class="section-header">
+            <div class="section-title">
+                <h2 class="text-3xl">Featured Listings</h2>
+                <p>Exceptional properties currently available in the Toronto market</p>
+            </div>
+            <a href="#" class="view-all">View All Properties</a>
+        </div>
+
+        <div class="properties-grid">
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="images/property-1.jpg" alt="Property 1">
+                    <div class="property-tag">FOR SALE</div>
+                </div>
+                <div class="property-info">
+                    <div class="property-price">$1,250,000</div>
+                    <div class="property-address">123 Bay Street, Toronto</div>
+                    <div class="property-meta">
+                        <span>3 Beds</span>
+                        <span>2 Baths</span>
+                        <span>1,400 sqft</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="images/property-2.jpg" alt="Property 2">
+                    <div class="property-tag">FOR SALE</div>
+                </div>
+                <div class="property-info">
+                    <div class="property-price">$890,000</div>
+                    <div class="property-address">456 Yonge Street, Toronto</div>
+                    <div class="property-meta">
+                        <span>2 Beds</span>
+                        <span>2 Baths</span>
+                        <span>950 sqft</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="images/property-3.jpg" alt="Property 3">
+                    <div class="property-tag">FOR SALE</div>
+                </div>
+                <div class="property-info">
+                    <div class="property-price">$2,100,000</div>
+                    <div class="property-address">789 Avenue Road, Toronto</div>
+                    <div class="property-meta">
+                        <span>4 Beds</span>
+                        <span>3 Baths</span>
+                        <span>2,200 sqft</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="about-image">
+            <img src="images/vania-profile.jpg" alt="Vania Likov">
+            <div class="experience-badge">
+                <div class="years">8+</div>
+                <div class="text">Years Experience</div>
+            </div>
+        </div>
+        <div class="about-content">
+            <h2 class="text-3xl">Your trusted partner in <strong>Toronto real estate</strong></h2>
+            <p>I believe buying or selling a home should be an exciting milestone, not a stressful ordeal. That's why I combine deep market expertise with genuine care for my clients' needs.</p>
+            <p>Whether you're a first-time buyer navigating the market or a seasoned investor looking for your next opportunity, I'm here to guide you every step of the way.</p>
+            <a href="tel:647-705-2302" class="about-cta">Let's Talk →</a>
+        </div>
+    </section>
+
+    <section class="contact-cta">
+        <h2 class="text-3xl">Ready to make your move?</h2>
+        <p class="text-lg">Let's discuss your real estate goals and create a strategy tailored to your needs.</p>
+        <a href="tel:647-705-2302" class="contact-btn">Call (647) 705-2302</a>
+    </section>
+
+    <footer>
+        <div class="footer-logo">Vania Likov</div>
+        <div>&copy; 2026 Homeward Real Estate. All rights reserved.</div>
+    </footer>
+</body>
+</html>
