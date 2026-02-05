@@ -370,17 +370,16 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
-        /* Stats in Hero */
+        /* Stats in Hero - PROMINENT */
         .hero-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 3rem;
-            max-width: 800px;
+            gap: 2rem;
+            max-width: 900px;
             width: 100%;
-            margin: 2rem auto 0;
+            margin: 0 auto 3rem;
             text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.2);
+            padding: 1rem 0;
         }
 
         .hero-stats .stat-item {
@@ -388,7 +387,7 @@
         }
 
         .hero-stats .stat-number {
-            font-size: 2.5rem;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             font-weight: 700;
             line-height: 1;
             margin-bottom: 0.5rem;
@@ -1234,10 +1233,6 @@
                 min-height: 500px;
             }
 
-            .hero-stats .stat-number {
-                font-size: 2rem;
-            }
-
             .gallery-grid {
                 grid-template-columns: 1fr;
             }
@@ -1321,17 +1316,7 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="hero-content">
-            <img src="images/vania-profile.jpg" alt="Vania Likov" class="hero-profile" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop'">
-            <div class="hero-text">
-                <div class="hero-badge">★ Top Producing Agent • 30+ Years Experience</div>
-                <h1>Your Trusted Toronto Real Estate Expert</h1>
-                <p>Helping families buy, sell, and invest in Greater Toronto Area real estate. From first homes to $3+ million luxury estates, I negotiate the best possible results with integrity and dedication.</p>
-                <p style="font-size: 1.2rem; margin-top: 1rem;">vania.likov@gmail.com | 416 836 5737</p>
-            </div>
-        </div>
-        
-        <!-- Stats - Above the fold -->
+        <!-- Stats - First thing visitors see -->
         <div class="hero-stats">
             <div class="stat-item">
                 <div class="stat-number">$300M+</div>
@@ -1344,6 +1329,16 @@
             <div class="stat-item">
                 <div class="stat-number">30+</div>
                 <div class="stat-label">Years Experience</div>
+            </div>
+        </div>
+        
+        <div class="hero-content">
+            <img src="images/vania-profile.jpg" alt="Vania Likov" class="hero-profile" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop'">
+            <div class="hero-text">
+                <div class="hero-badge">★ Top Producing Agent • 30+ Years Experience</div>
+                <h1>Your Trusted Toronto Real Estate Expert</h1>
+                <p>Helping families buy, sell, and invest in Greater Toronto Area real estate. From first homes to $3+ million luxury estates, I negotiate the best possible results with integrity and dedication.</p>
+                <p style="font-size: 1.2rem; margin-top: 1rem;">vania.likov@gmail.com | 416 836 5737</p>
             </div>
         </div>
     </section>
